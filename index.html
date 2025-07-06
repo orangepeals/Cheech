@@ -1,35 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Cheech</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f9f9f9;
-      overflow: hidden;
-    }
+<meta charset="UTF-8" />
+<title>Cheech</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #f9f9f9;
+    overflow: hidden;
+    position: relative;
+    font-family: sans-serif;
+  }
 
-    h1 {
-      font-size: 3rem;
-      color: #333;
-      animation: pulse 2.5s infinite ease-in-out;
-      transform-origin: center;
-    }
+  h1 {
+    text-align: center;
+    font-size: 3rem;
+    color: #333;
+    margin: 20px 0;
+  }
 
-    @keyframes pulse {
-      0%   { transform: scale(0.1); opacity: 0.2; }
-      50%  { transform: scale(10); opacity: 1; }
-      100% { transform: scale(0.1); opacity: 0.2; }
+  .globe {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    animation: floatSpin 10s linear infinite;
+  }
+
+  .globe img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  /* Different start positions and timings */
+  .globe1 {
+    top: 20%;
+    left: 10%;
+    animation-name: floatSpin1;
+  }
+  .globe2 {
+    top: 60%;
+    left: 70%;
+    animation-name: floatSpin2;
+  }
+
+  /* Keyframes to float and spin */
+  @keyframes floatSpin1 {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
     }
-  </style>
+    50% {
+      transform: translate(50px, 30px) rotate(180deg);
+    }
+    100% {
+      transform: translate(0, 0) rotate(360deg);
+    }
+  }
+
+  @keyframes floatSpin2 {
+    0% {
+      transform: translate(0, 0) rotate(360deg);
+    }
+    50% {
+      transform: translate(-40px, -25px) rotate(180deg);
+    }
+    100% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+  }
+</style>
 </head>
 <body>
+
   <h1>Cheech</h1>
+
+  <div class="globe globe1">
+    <img src="Gia1.JPG" alt="Gia 1" />
+  </div>
+
+  <div class="globe globe2">
+    <img src="Gia2.JPG" alt="Gia 2" />
+  </div>
+
 </body>
 </html>
