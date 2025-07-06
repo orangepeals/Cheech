@@ -1,100 +1,150 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
-<meta charset="UTF-8" />
-<title>Cheech</title>
-<style>
-  body {
-    margin: 0;
-    height: 100vh;
-    overflow: hidden;
-    background: #f9f9f9;
-    font-family: sans-serif;
-    position: relative;
-  }
+  <meta charset="UTF-8" />
+  <title>Cheech</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: #f9f9f9;
+      font-family: sans-serif;
+      position: relative;
+    }
 
-  h1 {
-    font-size: 3rem;
-    color: #333;
-    text-align: center;
-    margin: 20px 0;
-    animation: pulse 2s infinite ease-in-out;
-    transform-origin: center;
-    position: relative;
-    z-index: 10;
-  }
+    h1 {
+      font-size: 3rem;
+      color: #333;
+      text-align: center;
+      margin: 20px 0;
+      animation: pulse 2s infinite ease-in-out;
+      transform-origin: center;
+      position: relative;
+      z-index: 10;
+    }
 
-  @keyframes pulse {
-    0%   { transform: scale(1); }
-    50%  { transform: scale(0.1); }
-    100% { transform: scale(1); }
-  }
+    @keyframes pulse {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(0.1); }
+      100% { transform: scale(1); }
+    }
 
-  .globe {
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    overflow: hidden;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    animation-timing-function: linear;
-  }
+    .globe {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
 
-  .globe img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    animation: spin 8s linear infinite;
-  }
+    .globe img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      animation: spin 8s linear infinite;
+    }
 
-  @keyframes spin {
-    from { transform: rotate(0deg);}
-    to { transform: rotate(360deg);}
-  }
-
-  /* Floating & bouncing animations */
-  @keyframes floatBounce1 {
-    0%   { transform: translate(0, 0); }
-    25%  { transform: translate(60px, -40px); }
-    50%  { transform: translate(120px, 20px); }
-    75%  { transform: translate(60px, 60px); }
-    100% { transform: translate(0, 0); }
-  }
-
-  @keyframes floatBounce2 {
-    0%   { transform: translate(0, 0); }
-    25%  { transform: translate(-80px, 30px); }
-    50%  { transform: translate(-140px, -30px); }
-    75%  { transform: translate(-70px, -70px); }
-    100% { transform: translate(0, 0); }
-  }
-
-  .globe1 {
-    top: 20%;
-    left: 10%;
-    animation: floatBounce1 12s ease-in-out infinite;
-  }
-
-  .globe2 {
-    top: 60%;
-    left: 70%;
-    animation: floatBounce2 10s ease-in-out infinite;
-  }
-
-</style>
+    @keyframes spin {
+      from { transform: rotate(0deg);}
+      to { transform: rotate(360deg);}
+    }
+  </style>
 </head>
 <body>
 
   <h1>Cheech</h1>
 
-  <div class="globe globe1">
+  <div class="globe" id="globe1">
     <img src="Gia1.JPG" alt="Gia 1" />
   </div>
 
-  <div class="globe globe2">
+  <div class="globe" id="globe2">
     <img src="Gia2.JPG" alt="Gia 2" />
   </div>
+
+  <script>
+    const globes = [
+      {
+        el: document.getElementById('globe1'),
+        x: 0,
+        y: 0,
+        vx: 2 + Math.random() * 2,
+        vy: 2 + Math.random() * 2,
+      },
+      {
+        el: document.getElementById('globe2'),
+        x: 0,
+        y: 0,
+        vx: 2 + Math.random() * 2,
+        vy: 2 + Math.random() * 2,
+      }
+    ];
+
+    const globeSize = 150; // px
+    const padding = 10; // keep globes inside viewport with some padding
+
+    function moveGlobes() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      globes.forEach(g => {
+        g.x += g.vx;
+        g.y += g.vy;
+
+        // Bounce off right edge
+        if (g.x + globeSize + padding > width) {
+          g.x = width - globeSize - padding;
+          g.vx *= -1;
+        }
+        // Bounce off left edge
+        if (g.x < padding) {
+          g.x = padding;
+          g.vx *= -1;
+        }
+        // Bounce off bottom edge
+        if (g.y + globeSize + padding > height) {
+          g.y = height - globeSize - padding;
+          g.vy *= -1;
+        }
+        // Bounce off top edge
+        if (g.y < padding + 70) { // +70 to avoid overlapping with heading
+          g.y = padding + 70;
+          g.vy *= -1;
+        }
+
+        g.el.style.left = g.x + 'px';
+        g.el.style.top = g.y + 'px';
+      });
+
+      requestAnimationFrame(moveGlobes);
+    }
+
+    // Initialize positions randomly inside viewport
+    function initPositions() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      globes.forEach(g => {
+        g.x = Math.random() * (width - globeSize - 20) + 10;
+        g.y = Math.random() * (height - globeSize - 100) + 80;
+      });
+    }
+
+    window.addEventListener('resize', () => {
+      // Keep globes inside viewport after resize
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      globes.forEach(g => {
+        if(g.x + globeSize > width) g.x = width - globeSize - padding;
+        if(g.y + globeSize > height) g.y = height - globeSize - padding;
+      });
+    });
+
+    initPositions();
+    moveGlobes();
+  </script>
 
 </body>
 </html>
