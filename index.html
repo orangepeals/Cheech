@@ -34,14 +34,15 @@
 
     .globe {
       position: absolute;
-      width: 150px;
-      height: 150px;
+      width: 375px;
+      height: 375px;
       border-radius: 50%;
       overflow: hidden;
-      box-shadow: 
-        inset -10px -10px 30px rgba(0, 0, 0, 0.4),
-        0 0 20px rgba(0, 0, 0, 0.3);
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), rgba(0,0,0,0.1));
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), rgba(0,0,0,0.6));
+      box-shadow:
+        inset -60px -60px 90px rgba(0,0,0,0.5),
+        inset 40px 40px 80px rgba(255,255,255,0.1),
+        0 0 25px rgba(0,0,0,0.4);
       transform-style: preserve-3d;
     }
 
@@ -50,27 +51,26 @@
       height: 100%;
       object-fit: cover;
       border-radius: 50%;
-      animation: spin 8s linear infinite;
-      filter: brightness(1.1) contrast(1.1);
-      transform: scale(1.02);
+      animation: spin 10s linear infinite;
+      filter: brightness(1.1) contrast(1.2) saturate(1.1);
     }
 
     .globe::after {
       content: '';
       position: absolute;
-      top: 20%;
-      left: 20%;
-      width: 30%;
-      height: 30%;
+      top: 18%;
+      left: 18%;
+      width: 35%;
+      height: 35%;
       border-radius: 50%;
-      background: radial-gradient(white, rgba(255,255,255,0) 70%);
-      opacity: 0.3;
+      background: radial-gradient(circle, rgba(255,255,255,0.5), rgba(255,255,255,0) 70%);
       pointer-events: none;
+      mix-blend-mode: screen;
     }
 
     @keyframes spin {
       from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+      to   { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -87,25 +87,25 @@
   </div>
 
   <script>
+    const globeSize = 375; // px
+    const padding = 20;
+
     const globes = [
       {
         el: document.getElementById('globe1'),
         x: 0,
         y: 0,
-        vx: 2 + Math.random() * 2,
-        vy: 2 + Math.random() * 2,
+        vx: 1.5 + Math.random() * 1.5,
+        vy: 1.5 + Math.random() * 1.5,
       },
       {
         el: document.getElementById('globe2'),
         x: 0,
         y: 0,
-        vx: 2 + Math.random() * 2,
-        vy: 2 + Math.random() * 2,
+        vx: 1.5 + Math.random() * 1.5,
+        vy: 1.5 + Math.random() * 1.5,
       }
     ];
-
-    const globeSize = 150; // px
-    const padding = 10;
 
     function moveGlobes() {
       const width = window.innerWidth;
@@ -143,8 +143,8 @@
       const width = window.innerWidth;
       const height = window.innerHeight;
       globes.forEach(g => {
-        g.x = Math.random() * (width - globeSize - 20) + 10;
-        g.y = Math.random() * (height - globeSize - 100) + 80;
+        g.x = Math.random() * (width - globeSize - 2 * padding) + padding;
+        g.y = Math.random() * (height - globeSize - 2 * padding) + padding;
       });
     }
 
@@ -163,5 +163,3 @@
 
 </body>
 </html>
-
-
