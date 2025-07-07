@@ -1,150 +1,36 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8" />
-  <title>Cheech</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      overflow: hidden;
-      background: #f9f9f9;
-      font-family: sans-serif;
-      position: relative;
-    }
+.globe {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 
+    inset -10px -10px 30px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(0, 0, 0, 0.3);
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), rgba(0,0,0,0.1));
+  transform-style: preserve-3d;
+}
 
-    h1 {
-      font-size: 3rem;
-      color: #333;
-      text-align: center;
-      margin: 20px 0;
-      animation: pulse 2s infinite ease-in-out;
-      transform-origin: center;
-      position: relative;
-      z-index: 10;
-    }
+.globe img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  animation: spin 8s linear infinite;
+  filter: brightness(1.1) contrast(1.1);
+  transform: scale(1.02);
+}
 
-    @keyframes pulse {
-      0%   { transform: scale(1); }
-      50%  { transform: scale(0.1); }
-      100% { transform: scale(1); }
-    }
-
-    .globe {
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      overflow: hidden;
-      box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    }
-
-    .globe img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      animation: spin 8s linear infinite;
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg);}
-      to { transform: rotate(360deg);}
-    }
-  </style>
-</head>
-<body>
-
-  <h1>Cheech</h1>
-
-  <div class="globe" id="globe1">
-    <img src="Gia1.JPG" alt="Gia 1" />
-  </div>
-
-  <div class="globe" id="globe2">
-    <img src="Gia2.JPG" alt="Gia 2" />
-  </div>
-
-  <script>
-    const globes = [
-      {
-        el: document.getElementById('globe1'),
-        x: 0,
-        y: 0,
-        vx: 2 + Math.random() * 2,
-        vy: 2 + Math.random() * 2,
-      },
-      {
-        el: document.getElementById('globe2'),
-        x: 0,
-        y: 0,
-        vx: 2 + Math.random() * 2,
-        vy: 2 + Math.random() * 2,
-      }
-    ];
-
-    const globeSize = 150; // px
-    const padding = 10; // keep globes inside viewport with some padding
-
-    function moveGlobes() {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-
-      globes.forEach(g => {
-        g.x += g.vx;
-        g.y += g.vy;
-
-        // Bounce off right edge
-        if (g.x + globeSize + padding > width) {
-          g.x = width - globeSize - padding;
-          g.vx *= -1;
-        }
-        // Bounce off left edge
-        if (g.x < padding) {
-          g.x = padding;
-          g.vx *= -1;
-        }
-        // Bounce off bottom edge
-        if (g.y + globeSize + padding > height) {
-          g.y = height - globeSize - padding;
-          g.vy *= -1;
-        }
-        // Bounce off top edge
-        if (g.y < padding + 70) { // +70 to avoid overlapping with heading
-          g.y = padding + 70;
-          g.vy *= -1;
-        }
-
-        g.el.style.left = g.x + 'px';
-        g.el.style.top = g.y + 'px';
-      });
-
-      requestAnimationFrame(moveGlobes);
-    }
-
-    // Initialize positions randomly inside viewport
-    function initPositions() {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      globes.forEach(g => {
-        g.x = Math.random() * (width - globeSize - 20) + 10;
-        g.y = Math.random() * (height - globeSize - 100) + 80;
-      });
-    }
-
-    window.addEventListener('resize', () => {
-      // Keep globes inside viewport after resize
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      globes.forEach(g => {
-        if(g.x + globeSize > width) g.x = width - globeSize - padding;
-        if(g.y + globeSize > height) g.y = height - globeSize - padding;
-      });
-    });
-
-    initPositions();
-    moveGlobes();
-  </script>
-
-</body>
-</html>
+/* Optional specular light shine */
+.globe::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: radial-gradient(white, rgba(255,255,255,0) 70%);
+  opacity: 0.3;
+  pointer-events: none;
+}
