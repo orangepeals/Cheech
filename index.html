@@ -1,36 +1,167 @@
-.globe {
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  overflow: hidden;
-  box-shadow: 
-    inset -10px -10px 30px rgba(0, 0, 0, 0.4),
-    0 0 20px rgba(0, 0, 0, 0.3);
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), rgba(0,0,0,0.1));
-  transform-style: preserve-3d;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cheech</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: radial-gradient(ellipse at center, #111 0%, #000 100%);
+      font-family: sans-serif;
+      position: relative;
+    }
 
-.globe img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  animation: spin 8s linear infinite;
-  filter: brightness(1.1) contrast(1.1);
-  transform: scale(1.02);
-}
+    h1 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4rem;
+      color: #ffffff;
+      text-align: center;
+      animation: pulse 2s infinite ease-in-out;
+      z-index: 10;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
 
-/* Optional specular light shine */
-.globe::after {
-  content: '';
-  position: absolute;
-  top: 20%;
-  left: 20%;
-  width: 30%;
-  height: 30%;
-  border-radius: 50%;
-  background: radial-gradient(white, rgba(255,255,255,0) 70%);
-  opacity: 0.3;
-  pointer-events: none;
-}
+    @keyframes pulse {
+      0%   { transform: translate(-50%, -50%) scale(1); }
+      50%  { transform: translate(-50%, -50%) scale(1.1); }
+      100% { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .globe {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 
+        inset -10px -10px 30px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(0, 0, 0, 0.3);
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), rgba(0,0,0,0.1));
+      transform-style: preserve-3d;
+    }
+
+    .globe img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      animation: spin 8s linear infinite;
+      filter: brightness(1.1) contrast(1.1);
+      transform: scale(1.02);
+    }
+
+    .globe::after {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 20%;
+      width: 30%;
+      height: 30%;
+      border-radius: 50%;
+      background: radial-gradient(white, rgba(255,255,255,0) 70%);
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Cheech</h1>
+
+  <div class="globe" id="globe1">
+    <img src="Gia1.JPG" alt="Gia 1" />
+  </div>
+
+  <div class="globe" id="globe2">
+    <img src="Gia2.JPG" alt="Gia 2" />
+  </div>
+
+  <script>
+    const globes = [
+      {
+        el: document.getElementById('globe1'),
+        x: 0,
+        y: 0,
+        vx: 2 + Math.random() * 2,
+        vy: 2 + Math.random() * 2,
+      },
+      {
+        el: document.getElementById('globe2'),
+        x: 0,
+        y: 0,
+        vx: 2 + Math.random() * 2,
+        vy: 2 + Math.random() * 2,
+      }
+    ];
+
+    const globeSize = 150; // px
+    const padding = 10;
+
+    function moveGlobes() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      globes.forEach(g => {
+        g.x += g.vx;
+        g.y += g.vy;
+
+        if (g.x + globeSize + padding > width) {
+          g.x = width - globeSize - padding;
+          g.vx *= -1;
+        }
+        if (g.x < padding) {
+          g.x = padding;
+          g.vx *= -1;
+        }
+        if (g.y + globeSize + padding > height) {
+          g.y = height - globeSize - padding;
+          g.vy *= -1;
+        }
+        if (g.y < padding) {
+          g.y = padding;
+          g.vy *= -1;
+        }
+
+        g.el.style.left = g.x + 'px';
+        g.el.style.top = g.y + 'px';
+      });
+
+      requestAnimationFrame(moveGlobes);
+    }
+
+    function initPositions() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      globes.forEach(g => {
+        g.x = Math.random() * (width - globeSize - 20) + 10;
+        g.y = Math.random() * (height - globeSize - 100) + 80;
+      });
+    }
+
+    window.addEventListener('resize', () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      globes.forEach(g => {
+        if (g.x + globeSize > width) g.x = width - globeSize - padding;
+        if (g.y + globeSize > height) g.y = height - globeSize - padding;
+      });
+    });
+
+    initPositions();
+    moveGlobes();
+  </script>
+
+</body>
+</html>
+
+
